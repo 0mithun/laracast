@@ -10,6 +10,9 @@
                 <br><br>
           
                 <form @submit.prevent="attemptLogin">
+                  <div class="alert alert-danger" v-if="errors" >
+                    {{ errors }}
+                  </div>
                   <div class="form-group">
                     <input type="text" class="form-control" placeholder="Email" v-model="email">
                   </div>
@@ -34,7 +37,7 @@
                 </form>
                 <hr class="w-30">
           
-                <p class="text-center text-muted fs-13 mt-20">Don't have an account? <a href="page-register.html">Sign up</a></p>
+                <p class="text-center text-muted fs-13 mt-20">Don't have an account? <a href="/register">Sign up</a></p>
               </div>
             </div>
           </div>
@@ -48,12 +51,14 @@
           return{
             email:'',
             password:'',
-            remember:true
+            remember:true,
+            loading:false,
+            errors: ''
           }
         },
         computed: {
           isValidLoginForm(){
-            return this.emailIsValid() && this.password
+            return this.emailIsValid() && this.password && !this.loading
           }
         },
         methods: {
@@ -64,6 +69,7 @@
             return false          
           },
           attemptLogin(){
+            this.loading = true
             axios.post('/login',{email:this.email, password:this.password, remember:this.remember})
               .then(res=>{
                 console.log(res)
@@ -71,6 +77,12 @@
               })
               .catch(err=>{
                 console.log(err)
+                this.loading = false
+                if(err.response.status == 422){
+                  this.errors = err.response.data.message
+                }else{
+                  this.errors = 'Something wrong.'
+                }
               })
           }
 

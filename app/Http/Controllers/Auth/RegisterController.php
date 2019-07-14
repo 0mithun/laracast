@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
+use App\Mail\ConfirmYourEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -65,8 +69,18 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
+            'username' =>  str_slug($data['name']),
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'confirm_token' =>  str_random(25)
         ]);
     }
+
+    // protected function registered(Request $request, $user)
+    // {
+    //     return redirect()->route('verification.notice');
+    //     // Mail::to($user->email)->send(new ConfirmYourEmail());
+
+    //     // return redirect($this->redirectPath());
+    // }
 }

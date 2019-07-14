@@ -15,18 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Auth::routes();
+Auth::routes(['verify' => true, 'register'=>'false']);
 
-
-// Auth::routes();
-
-Route::post('/login','Auth\LoginController@login');
 Route::get('/login',function(){
    return redirect('/');
 });
-Route::get('/logout', function(){
-    auth()->logout();
-});
-
-
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::group(['middleware' => ['admin'], 'prefix' => 'admin'] , function () {
+    Route::resource('series', 'SeriesController');
+});

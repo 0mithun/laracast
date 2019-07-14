@@ -23,14 +23,14 @@
     <div id="app">
 
     <!-- Topbar -->
-    <nav class="topbar topbar-inverse topbar-expand-sm topbar-sticky">
+    <nav class="topbar  topbar-expand-sm topbar-sticky">
       <div class="container">
         
         <div class="topbar-left">
           <button class="topbar-toggler">&#9776;</button>
           <span class="topbar-brand fs-18 fw-400">
-            <a class="logo-default" href="#" style="color: #563d7c">Laracast</a>
-            <a class="logo-inverse text-white" href="#">Laracast</a>
+            <a class="logo-default" href="{{ url('/') }}" style="color: #563d7c">{{ config('app.name')}}</a>
+            <a class="logo-inverse text-white" href="#">{{ config('app.name') }}</a>
           </span>
         </div>
 
@@ -40,8 +40,14 @@
 
             @if(auth()->check())
               <li class="nav-item">Hey, {{ auth()->user()->name }}</li>
+              <li class="nav-item" > <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();"> Log Out </a></li>
               {{-- <li class="nav-item"><a class="nav-link" href="#" >Log Out</a></li> --}}
+              <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display:none;">
+                @csrf
+              </form>
             @else
+              <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
               <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#LoginModal">Login</a></li>
             @endif
           </ul>
@@ -71,9 +77,9 @@
     </main>
     <!-- END Main container -->
 
-  @if (!auth()->check())
-    <vue-login></vue-login>
-  @endif
+    @guest
+      <vue-login></vue-login>
+    @endguest
     
 
   <!-- Footer -->

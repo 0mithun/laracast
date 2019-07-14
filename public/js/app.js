@@ -1741,17 +1741,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       email: '',
       password: '',
-      remember: true
+      remember: true,
+      loading: false,
+      errors: ''
     };
   },
   computed: {
     isValidLoginForm: function isValidLoginForm() {
-      return this.emailIsValid() && this.password;
+      return this.emailIsValid() && this.password && !this.loading;
     }
   },
   methods: {
@@ -1763,6 +1768,9 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     },
     attemptLogin: function attemptLogin() {
+      var _this = this;
+
+      this.loading = true;
       axios.post('/login', {
         email: this.email,
         password: this.password,
@@ -1772,6 +1780,13 @@ __webpack_require__.r(__webpack_exports__);
         location.reload();
       })["catch"](function (err) {
         console.log(err);
+        _this.loading = false;
+
+        if (err.response.status == 422) {
+          _this.errors = err.response.data.message;
+        } else {
+          _this.errors = 'Something wrong.';
+        }
       });
     }
   }
@@ -37754,6 +37769,16 @@ var render = function() {
                     }
                   },
                   [
+                    _vm.errors
+                      ? _c("div", { staticClass: "alert alert-danger" }, [
+                          _vm._v(
+                            "\n                " +
+                              _vm._s(_vm.errors) +
+                              "\n              "
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "form-group" }, [
                       _c("input", {
                         directives: [
@@ -37903,7 +37928,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("p", { staticClass: "text-center text-muted fs-13 mt-20" }, [
       _vm._v("Don't have an account? "),
-      _c("a", { attrs: { href: "page-register.html" } }, [_vm._v("Sign up")])
+      _c("a", { attrs: { href: "/register" } }, [_vm._v("Sign up")])
     ])
   }
 ]
