@@ -10,23 +10,36 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Lesson Title" v-model="lesson.title">
+                        <input type="text" class="form-control" :class=" errors.title ? 'is-invalid' : ''" placeholder="Lesson Title" v-model="lesson.title">
+
+                        <div class="invalid-feedback" v-if="errors.title">
+                            {{ errors.title[0] }}
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Video ID" v-model="lesson.video_id">
+                        <input type="text" class="form-control" :class=" errors.video_id ? 'is-invalid' : ''" placeholder="Video ID" v-model="lesson.video_id">
+                        <div class="invalid-feedback" v-if="errors.video_id">
+                            {{ errors.video_id[0] }}
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="number" class="form-control" placeholder="Episode Number" v-model="lesson.episode_number">
+                        <input type="number" class="form-control" :class=" errors.episode_number ? 'is-invalid' : ''" placeholder="Episode Number" v-model="lesson.episode_number">
+                        <div class="invalid-feedback" v-if="errors.episode_number">
+                            {{ errors.episode_number[0] }}
+                        </div>
                     </div>
                     
                     <div class="form-group">
-                        <textarea i cols="30" rows="5" class="form-control" placeholder="Lesson Description" v-model="lesson.description"></textarea>
+                        <textarea i cols="30" rows="5" class="form-control" :class=" errors.description ? 'is-invalid' : ''" placeholder="Lesson Description" v-model="lesson.description"></textarea>
+                        <div class="invalid-feedback" v-if="errors.description">
+                            {{ errors.description[0] }}
+                        </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success btn-block" type="btn" @click="updateLesson" v-if="editing">Save Lesson</button>
-                    <button class="btn btn-success btn-block" type="btn" @click="createLesson" v-else>Create Lesson</button>
+                    <button class="btn btn-success btn-block" type="button" @click="updateLesson" v-if="editing">Save Lesson</button>
+                    <button class="btn btn-primary btn-block" type="button" @click="createLesson" v-else>Create Lesson</button>
                 </div>
             </div>
         </div>
@@ -49,15 +62,11 @@
     export default{
         data(){
             return {
-                // title: '',
-                // video_id:'',
-                // episode_number:'',
-                // description: '',
-
                 lesson : {},
                 seriesId : '',
                 lessonId: null,
-                editing:false
+                editing:false,
+                errors: {}
             }
         },
         mounted() {
@@ -74,14 +83,6 @@
                 this.editing = true
 
                 this.lesson = new Lesson(lesson)
-
-                // this.title = lesson.title
-                // this.video_id = lesson.video_id
-                // this.episode_number = lesson.episode_number
-                // this.description = lesson.description
-
-
-
                 this.seriesId = seriesId,
                 this.lessonId = lesson.id
 
@@ -96,23 +97,21 @@
                     $('#createLesson').modal('hide')
                 })
                 .catch(err=>{
-                    console.log(err)
+                    this.errors = err.response.data.errors
                 })
             },
             updateLesson(){
                 axios.put(`/admin/${this.seriesId}/lessons/${this.lessonId}`, this.lesson)
-                .then((res) => {
-                    
+                .then((res) => {                    
                     this.title = ''
                     this.video_id = ''
                     this.episode_number= ''
                     this.description = ''
                     this.lessonId = null
-
                     $('#createLesson').modal('hide')
                     this.$parent.$emit('lesson_updated', res.data)
                 }).catch((err) => {
-                    console.log(err)
+                    this.errors = err.response.data.errors
                 });
             }
         },

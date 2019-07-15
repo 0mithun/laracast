@@ -1,14 +1,14 @@
 <template>
     <div class="container">
         <h1 class="text-center">
-            <button class="btn-primary" @click="createNewLesson">Create New Lesson</button>
+            <button class="btn btn-primary" @click="createNewLesson">Create New Lesson</button>
         </h1>
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between" v-for="(lesson, index) in lessons" :key="index">
                 <p>{{lesson.title }}</p>
                 <p>
-                    <button class="btn-primary btn-xs" @click="editLesson(lesson)">Edit</button>
-                    <button class="btn-danger btn-xs" @click="deleteLesson(lesson.id, index)">Delete</button>
+                    <button class="btn btn-primary btn-xs" type="button"  @click="editLesson(lesson)">Edit</button>
+                    <button class="btn btn-danger btn-xs" type="button" @click="deleteLesson(lesson.id, index)">Delete</button>
                 </p>
             </li>
         </ul>

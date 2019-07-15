@@ -1926,6 +1926,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 var Lesson = function Lesson(lesson) {
@@ -1940,14 +1953,11 @@ var Lesson = function Lesson(lesson) {
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      // title: '',
-      // video_id:'',
-      // episode_number:'',
-      // description: '',
       lesson: {},
       seriesId: '',
       lessonId: null,
-      editing: false
+      editing: false,
+      errors: {}
     };
   },
   mounted: function mounted() {
@@ -1963,11 +1973,7 @@ var Lesson = function Lesson(lesson) {
       var lesson = _ref.lesson,
           seriesId = _ref.seriesId;
       _this.editing = true;
-      _this.lesson = new Lesson(lesson); // this.title = lesson.title
-      // this.video_id = lesson.video_id
-      // this.episode_number = lesson.episode_number
-      // this.description = lesson.description
-
+      _this.lesson = new Lesson(lesson);
       _this.seriesId = seriesId, _this.lessonId = lesson.id;
       $('#createLesson').modal();
     });
@@ -1981,7 +1987,7 @@ var Lesson = function Lesson(lesson) {
 
         $('#createLesson').modal('hide');
       })["catch"](function (err) {
-        console.log(err);
+        _this2.errors = err.response.data.errors;
       });
     },
     updateLesson: function updateLesson() {
@@ -1997,7 +2003,7 @@ var Lesson = function Lesson(lesson) {
 
         _this3.$parent.$emit('lesson_updated', res.data);
       })["catch"](function (err) {
-        console.log(err);
+        _this3.errors = err.response.data.errors;
       });
     }
   }
@@ -37946,7 +37952,10 @@ var render = function() {
       _c("h1", { staticClass: "text-center" }, [
         _c(
           "button",
-          { staticClass: "btn-primary", on: { click: _vm.createNewLesson } },
+          {
+            staticClass: "btn btn-primary",
+            on: { click: _vm.createNewLesson }
+          },
           [_vm._v("Create New Lesson")]
         )
       ]),
@@ -37968,7 +37977,8 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn-primary btn-xs",
+                    staticClass: "btn btn-primary btn-xs",
+                    attrs: { type: "button" },
                     on: {
                       click: function($event) {
                         return _vm.editLesson(lesson)
@@ -37981,7 +37991,8 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn-danger btn-xs",
+                    staticClass: "btn btn-danger btn-xs",
+                    attrs: { type: "button" },
                     on: {
                       click: function($event) {
                         return _vm.deleteLesson(lesson.id, index)
@@ -38282,6 +38293,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
+                class: _vm.errors.title ? "is-invalid" : "",
                 attrs: { type: "text", placeholder: "Lesson Title" },
                 domProps: { value: _vm.lesson.title },
                 on: {
@@ -38292,7 +38304,17 @@ var render = function() {
                     _vm.$set(_vm.lesson, "title", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.title
+                ? _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.errors.title[0]) +
+                        "\n                    "
+                    )
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -38306,6 +38328,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
+                class: _vm.errors.video_id ? "is-invalid" : "",
                 attrs: { type: "text", placeholder: "Video ID" },
                 domProps: { value: _vm.lesson.video_id },
                 on: {
@@ -38316,7 +38339,17 @@ var render = function() {
                     _vm.$set(_vm.lesson, "video_id", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.video_id
+                ? _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.errors.video_id[0]) +
+                        "\n                    "
+                    )
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -38330,6 +38363,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
+                class: _vm.errors.episode_number ? "is-invalid" : "",
                 attrs: { type: "number", placeholder: "Episode Number" },
                 domProps: { value: _vm.lesson.episode_number },
                 on: {
@@ -38340,7 +38374,17 @@ var render = function() {
                     _vm.$set(_vm.lesson, "episode_number", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.episode_number
+                ? _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.errors.episode_number[0]) +
+                        "\n                    "
+                    )
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -38354,6 +38398,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
+                class: _vm.errors.description ? "is-invalid" : "",
                 attrs: {
                   i: "",
                   cols: "30",
@@ -38369,7 +38414,17 @@ var render = function() {
                     _vm.$set(_vm.lesson, "description", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.description
+                ? _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.errors.description[0]) +
+                        "\n                    "
+                    )
+                  ])
+                : _vm._e()
             ])
           ]),
           _vm._v(" "),
@@ -38379,7 +38434,7 @@ var render = function() {
                   "button",
                   {
                     staticClass: "btn btn-success btn-block",
-                    attrs: { type: "btn" },
+                    attrs: { type: "button" },
                     on: { click: _vm.updateLesson }
                   },
                   [_vm._v("Save Lesson")]
@@ -38387,8 +38442,8 @@ var render = function() {
               : _c(
                   "button",
                   {
-                    staticClass: "btn btn-success btn-block",
-                    attrs: { type: "btn" },
+                    staticClass: "btn btn-primary btn-block",
+                    attrs: { type: "button" },
                     on: { click: _vm.createLesson }
                   },
                   [_vm._v("Create Lesson")]
