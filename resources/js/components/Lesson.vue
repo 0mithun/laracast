@@ -34,6 +34,10 @@
         mounted() {
             this.$on('lesson_created', (lesson)=>{
                 this.lessons.push(lesson)
+                window.noty({
+                    message: 'Lesson Created Successfully',
+                    type:'success'
+                })
                 this.showMessage('Create')
             })
 
@@ -43,6 +47,11 @@
                 })
                 this.lessons.splice(index, 1, lesson)
                 this.showMessage('Update')
+                window.noty({
+                    message: 'Lesson Updated Successfully',
+                    type:'success'
+                })
+
             })
         },
         components:{
@@ -56,12 +65,16 @@
             deleteLesson(lesson, index){
                 if(confirm('Are you sure you wanna delete ?')){
                     axios.delete(`/admin/${this.series_id}/lessons/${lesson} `)
-                        .then((res) => {
-                            this.lessons.splice(index, 1)
-                            this.showMessage('Delete')
-                        }).catch((err) => {
-                            console.log(err)
-                        });
+                    .then((res) => {
+                        this.lessons.splice(index, 1)
+                        this.showMessage('Delete')
+                        window.noty({
+                            message: 'Lesson Delete Successfully',
+                            type:'danger'
+                        })
+                    }).catch((err) => {
+                        console.log(err)
+                    });
                 }
             },
             editLesson(lesson){

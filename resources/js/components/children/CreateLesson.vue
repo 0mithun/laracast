@@ -80,6 +80,7 @@
             })
 
             this.$parent.$on('editLesson', ({lesson, seriesId})=>{
+                this.errors = {}
                 this.editing = true
 
                 this.lesson = new Lesson(lesson)
@@ -97,7 +98,15 @@
                     $('#createLesson').modal('hide')
                 })
                 .catch(err=>{
-                    this.errors = err.response.data.errors
+                    if(err.response.status ==422){
+                        this.errors = err.response.data.errors
+                    }else{
+                        window.noty({
+                            message: 'Something else, please refresh the page',
+                            type:'danger'
+                        })
+                    }
+                    
                 })
             },
             updateLesson(){
@@ -111,7 +120,14 @@
                     $('#createLesson').modal('hide')
                     this.$parent.$emit('lesson_updated', res.data)
                 }).catch((err) => {
-                    this.errors = err.response.data.errors
+                    if(err.response.status ==422){
+                        this.errors = err.response.data.errors
+                    }else{
+                        window.noty({
+                            message: 'Something else, please refresh the page',
+                            type:'danger'
+                        })
+                    }
                 });
             }
         },

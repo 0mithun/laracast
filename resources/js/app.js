@@ -19,10 +19,25 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
+
+
+
+window.events = new Vue();
+
+// window.events.$on('notification', function(){
+//     console.log('notification received')
+// })
+
+window.noty = function(notification){
+    window.events.$emit('notification', notification)
+}
+
+
 Vue.component('vue-login', require('./components/Login.vue').default);
 
 Vue.component('vue-lesson', require('./components/Lesson.vue').default)
 
+Vue.component('vue-noty', require('./components//Noty.vue').default)
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
