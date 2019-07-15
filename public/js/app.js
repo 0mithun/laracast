@@ -1719,13 +1719,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['default_lessons', 'series_id'],
   data: function data() {
     return {
-      lessons: JSON.parse(this.default_lessons)
+      lessons: JSON.parse(this.default_lessons),
+      message: null
     };
   },
   mounted: function mounted() {
@@ -1733,6 +1737,8 @@ __webpack_require__.r(__webpack_exports__);
 
     this.$on('lesson_created', function (lesson) {
       _this.lessons.push(lesson);
+
+      _this.showMessage('Create');
     });
     this.$on('lesson_updated', function (lesson) {
       var index = _this.lessons.findIndex(function (l) {
@@ -1740,6 +1746,8 @@ __webpack_require__.r(__webpack_exports__);
       });
 
       _this.lessons.splice(index, 1, lesson);
+
+      _this.showMessage('Update');
     });
   },
   components: {
@@ -1755,6 +1763,8 @@ __webpack_require__.r(__webpack_exports__);
       if (confirm('Are you sure you wanna delete ?')) {
         axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/admin/".concat(this.series_id, "/lessons/").concat(lesson, " ")).then(function (res) {
           _this2.lessons.splice(index, 1);
+
+          _this2.showMessage('Delete');
         })["catch"](function (err) {
           console.log(err);
         });
@@ -1766,6 +1776,14 @@ __webpack_require__.r(__webpack_exports__);
         lesson: lesson,
         seriesId: seriesId
       });
+    },
+    showMessage: function showMessage(message) {
+      var _this3 = this;
+
+      this.message = 'Lesson ' + message + ' Successfully';
+      setTimeout(function () {
+        _this3.message = null;
+      }, 5000);
     }
   }
 });
@@ -37949,6 +37967,12 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
+      _vm.message
+        ? _c("div", { staticClass: "alert alert-success" }, [
+            _vm._v("\n        " + _vm._s(_vm.message) + "\n    ")
+          ])
+        : _vm._e(),
+      _vm._v(" "),
       _c("h1", { staticClass: "text-center" }, [
         _c(
           "button",

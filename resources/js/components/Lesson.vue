@@ -1,5 +1,8 @@
 <template>
     <div class="container">
+        <div class="alert alert-success" v-if="message">
+            {{ message }}
+        </div>
         <h1 class="text-center">
             <button class="btn btn-primary" @click="createNewLesson">Create New Lesson</button>
         </h1>
@@ -25,11 +28,13 @@
         data() {
             return {
                 lessons: JSON.parse(this.default_lessons),
+                message:null
             }
         },
         mounted() {
             this.$on('lesson_created', (lesson)=>{
                 this.lessons.push(lesson)
+                this.showMessage('Create')
             })
 
             this.$on('lesson_updated', (lesson)=>{
@@ -37,6 +42,7 @@
                     return lesson.id == l.id
                 })
                 this.lessons.splice(index, 1, lesson)
+                this.showMessage('Update')
             })
         },
         components:{
@@ -52,6 +58,7 @@
                     axios.delete(`/admin/${this.series_id}/lessons/${lesson} `)
                         .then((res) => {
                             this.lessons.splice(index, 1)
+                            this.showMessage('Delete')
                         }).catch((err) => {
                             console.log(err)
                         });
@@ -60,6 +67,12 @@
             editLesson(lesson){
                 let seriesId = this.series_id
                 this.$emit('editLesson', {lesson, seriesId})
+            },
+            showMessage(message){
+                this.message = 'Lesson ' + message + ' Successfully'
+                setTimeout(()=>{
+                    this.message = null
+                }, 5000)
             }
         },
     }
