@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Series;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 use App\Http\Requests\CreateSeriesRequest;
+use App\Http\Requests\UpdateSeriesRequest;
 
 class SeriesController extends Controller
 {
@@ -15,7 +18,7 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        return 'Admin Series';
+        return view('admin.series.all')->withSeries(Series::all());
     }
 
     /**
@@ -61,9 +64,9 @@ class SeriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Series $series)
     {
-        //
+        return view('admin.series.edit')->withSeries($series);
     }
 
     /**
@@ -73,9 +76,21 @@ class SeriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateSeriesRequest $request, $id)
+    public function update(UpdateSeriesRequest $request, Series $series)
     {
-        //
+        if($request->hasFile('image')){
+            $series->image_url =  'series/'. $request->uploadSeriesImage()->fileName;            
+        }
+
+        $series->title = $request->title;
+        $series->description = $request->description;
+        $series->slug = str_slug($request->title);
+
+        $series->save();
+
+        session()->flash('success', 'Series Update Successfully');
+
+        return redirect()->route('series.index');
     }
 
     /**
