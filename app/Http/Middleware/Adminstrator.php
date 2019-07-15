@@ -20,7 +20,12 @@ class Adminstrator
             if(auth()->user()->isAdmin()){
                 return $next($request);
             }
-            return redirect('/');
+            else{
+                session()->flash('error','You are not authorized to perform this action');
+
+                return redirect('/');
+            }
+            
         }
 
         return redirect('/');

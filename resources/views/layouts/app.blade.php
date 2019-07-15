@@ -12,6 +12,7 @@
     <link href="{{ asset('assets/css/core.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/thesaas.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+    
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="{{ asset('assets/img/apple-touch-icon.png') }}">

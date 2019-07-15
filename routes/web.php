@@ -22,9 +22,16 @@ Route::get('/login',function(){
    return redirect('/');
 });
 
+
+
 Route::get('/home', 'HomeController@index')->name('home');
 
+// Route::get("{series_by_id}", function(\App\Series $series){
+//      dd($series);
+// });
 
 Route::group(['middleware' => ['admin'], 'prefix' => 'admin'] , function () {
     Route::resource('series', 'SeriesController');
+
+    Route::resource('{series_by_id}/lessons', 'LessonController');
 });

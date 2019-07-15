@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Lesson;
 use App\Series;
 use Illuminate\Http\Request;
-use App\Http\Requests\CreateSeriesRequest;
+use App\Http\Requests\CreateLessonRequest;
+use App\Http\Requests\UpdateLessonRequest;
 
-class SeriesController extends Controller
+class LessonController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +17,7 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        return 'Admin Series';
+        //
     }
 
     /**
@@ -25,7 +27,7 @@ class SeriesController extends Controller
      */
     public function create()
     {
-        return view('admin.series.create');
+        //
     }
 
     /**
@@ -34,34 +36,29 @@ class SeriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateSeriesRequest $request)
+    public function store(Series $series, CreateLessonRequest $request)
     {
-        // return $request->all();
-        
-
-       return $request->uploadSeriesImage()
-                ->storeSeries();
-        
+        return $series->lessons()->create($request->all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Lesson  $lesson
      * @return \Illuminate\Http\Response
      */
-    public function show(Series $series)
+    public function show(Lesson $lesson)
     {
-        return view('admin.series.index')->withSeries($series);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Lesson  $lesson
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Lesson $lesson)
     {
         //
     }
@@ -70,22 +67,26 @@ class SeriesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Lesson  $lesson
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateSeriesRequest $request, $id)
+    public function update(Series $series,  Lesson $lesson, UpdateLessonRequest $request)
     {
-        //
+        $lesson->update($request->all());
+
+        return $lesson->fresh();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Lesson  $lesson
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Series $series, Lesson $lesson)
     {
-        //
+        $lesson->delete();
+
+        return response()->json(['status'=>'ok'], 200);
     }
 }

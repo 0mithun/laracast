@@ -15,6 +15,7 @@ class CreateSeriesTest extends TestCase
 
    public function test_a_series_must_be_created_with_a_image(){
 
+      $this->loginAdmin();
       // $this->withoutExceptionHandling();
 
       // Storage::fake(config('filesystems.default'));
@@ -29,7 +30,7 @@ class CreateSeriesTest extends TestCase
    }
    public function test_a_series_must_be_created_with_on_image_which_actually_on_image(){
 
-      
+      $this->loginAdmin();
       $this->post('/admin/series',[
          'title'           => 'the best series',
          'description'     => 'the best series',
@@ -37,6 +38,23 @@ class CreateSeriesTest extends TestCase
       ])
          // ->assertRedirect('admin/series/create')
          ->assertSessionHasErrors('image')
+      ;
+   }
+
+   public function test_only_administrator_can_create_series(){
+
+      $this->withoutExceptionHandling();
+
+      $user = factory(\App\User::class)->create();
+
+      $this->actingAs($user);
+      
+      $this->post('/admin/series',[
+         'title'           => 'the best series',
+         'description'     => 'the best series',
+         'image'           => UploadedFile::fake()->image('image-series.png')
+      ])
+         ->assertSessionHas('error','You are not authorized to perform this action');
       ;
    }
 }

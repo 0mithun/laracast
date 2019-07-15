@@ -41,12 +41,4 @@ class User extends Authenticatable implements MustVerifyEmail
         return in_array($this->email, config('laracast.administrators'));
     }
 
-    // public function isConfirmed(){
-    //     return $this->confirm_token == null;
-    // }
-
-    // public function confirm(){
-    //     $this->confirm_token = null;
-    //     $this->save();
-    // }
 }
