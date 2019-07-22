@@ -2,13 +2,16 @@
 
 namespace App;
 
+use Redis;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use App\Entities\Learning;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable;
+    use Notifiable, Learning;
 
     /**
      * The attributes that are mass assignable.
@@ -40,5 +43,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isAdmin(){
         return in_array($this->email, config('laracast.administrators'));
     }
+
 
 }

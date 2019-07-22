@@ -35,7 +35,7 @@ class CreateSeriesRequest extends FormRequest
         $image = $this->image;
         $this->fileName =  str_slug($this->title).".".$image->getClientOriginalExtension();
 
-        $image->storePubliclyAs('series', $this->fileName);
+        $image->storePubliclyAs('public/series', $this->fileName);
 
         return $this;
     }

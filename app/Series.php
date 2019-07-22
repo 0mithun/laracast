@@ -19,6 +19,10 @@ class Series extends Model
 
      public function getRouteKeyName()
      {
-         return 'slug';
+        return 'slug';
+     }
+
+     public function getImagePathAttribute(){
+         return asset('storage/'.$this->image_url);
      }
 }

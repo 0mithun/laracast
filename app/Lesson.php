@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Lesson extends Model
 {
@@ -11,4 +12,7 @@ class Lesson extends Model
     ];
 
     
+    public function series(){
+        return $this->BelongsTo(Series::class);
+    }
 }

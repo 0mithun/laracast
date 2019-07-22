@@ -29,6 +29,8 @@
 
       </div>
     </header>
+
+    
     <!-- END Header -->
 
 @stop
@@ -44,6 +46,25 @@
             <hr>
             <p class="lead"></p>
           </header>
+          @forelse($series as $s)
+          <div class="card mb-30">
+            <div class="row align-items-center h-full">
+              <div class="col-12 col-md-4">
+                <a href="blog-single.html"><img src="{{ $s->image_path  }}" alt="..."></a>
+              </div>
+
+              <div class="col-12 col-md-8">
+                <div class="card-block">
+                  <h4 class="card-title">{{ $s->title }}</h4>
+                  <p class="card-text">{{ $s->description }}</p>
+                  <a class="fw-600 fs-12" href="blog-single.html">Read more <i class="fa fa-chevron-right fs-9 pl-8"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          @empty
+
+          @endforelse
         </div>
       </section>
     </main>

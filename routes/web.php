@@ -11,9 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/redis', function(){
+    // Redis::set('friend', 'momo');
+    dd(Redis::get('friend'));
 });
+
+
+Route::get('/','FrontendController@welcome');
 
 Auth::routes();
 Auth::routes(['verify' => true, 'register'=>'false']);
