@@ -55,7 +55,7 @@ trait Learning{
      */
 
     public function getNumberOfCompletedLessonsForASeries($series){
-        return count($this.getCompletedLessonsForASeries($series));
+        return count(redis::smembers("user:{$this->id}:series:{$series->id}"));
     }
 
 
@@ -68,10 +68,6 @@ trait Learning{
      * @return void
      * 
      */
-
-    public function getCompletedLessonsForASeries($series){
-        return redis::smembers("user:{$this->id}:series:{$series->id}");
-    }
 
 
     public function hasStartedSeries($series)
@@ -92,7 +88,7 @@ trait Learning{
 
      public function getCompletedLessons($series)
      {
-         $completedLesson = $this->getCompletedLessonsForASeries($series);
+         $completedLesson = $this->getNumberOfCompletedLessonsForASeries($series);
 
          return collect($completedLesson)->map(function($lesson_id){
              return Lesson::find($lesson_id);
