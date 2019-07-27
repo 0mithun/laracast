@@ -9,12 +9,11 @@
     <title>Bootstrap &middot; The world's most popular mobile-first and responsive front-end framework.</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link href="{{ asset('assets/css/core.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/thesaas.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     
-  
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="{{ asset('assets/img/apple-touch-icon.png') }}">
     <link rel="icon" href="{{ asset('assets/img/favicon.png') }}">
@@ -42,8 +41,6 @@
 
             @if(auth()->check())
               <li class="nav-item">Hey, {{ auth()->user()->name }}</li>
-              <li class="nav-item"> <a href="{{ route('series.index') }}">All Series</a> </li>
-              <li class="nav-item"> <a href="{{ route('series.create') }}">Add Series</a> </li>
               <li class="nav-item" > <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();"> Log Out </a></li>
               {{-- <li class="nav-item"><a class="nav-link" href="#" >Log Out</a></li> --}}
