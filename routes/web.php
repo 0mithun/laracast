@@ -34,3 +34,7 @@ Route::get('/series/{series}', 'FrontendController@series')->name('series');
 Route::get('/watch-series/{series}','WatchSeriesController@index')->name('series.learning');
 
 Route::get('/series/{series}/lesson/{lesson}', 'WatchSeriesController@showLesson')->name('series.watch');
+
+Route::post('/series/completed-lesson/{lesson}','WatchSeriesController@completeLesson');
+
+Route::get('profile/{user}','ProfileController@index')->name('profile');

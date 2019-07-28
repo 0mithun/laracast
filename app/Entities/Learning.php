@@ -4,6 +4,8 @@ namespace App\Entities;
 
 use Redis;
 use App\Lesson;
+use PhpParser\ErrorHandler\Collecting;
+use App\Series;
 
 trait Learning{
     
@@ -65,7 +67,7 @@ trait Learning{
      * 
      * @param App\Series $series
      * 
-     * @return void
+     * @return array 
      * 
      */
 
@@ -99,4 +101,83 @@ trait Learning{
          });
      }
 
+
+    /**
+     * 
+     * Check a user has completed a lesson
+     * 
+     * @param App\Lesson $lesson
+     * 
+     * @return void
+     */
+    
+
+
+
+     public function hasCompletedLesson($lesson){
+        return \in_array(
+            $lesson->id,
+            $this->getCompletedLessonsForASeries($lesson->series)
+        );
+     }
+
+    /** 
+     * Get a user completed series ids
+     * 
+     * @return array
+     * 
+    */
+     
+    public function seriesBeingWatchedIds(){
+        $keys = Redis::keys("user:{$this->id}:series:*"); 
+
+       $series_id_array = [];
+       foreach($keys as $key):
+            $series_id = explode(':',$key)[3];
+            array_push($series_id_array, $series_id);
+       endforeach;
+
+       return $series_id_array;
+    }
+
+
+    /** 
+     * 
+     * Get all the series a user is watching
+     * 
+     * @return void
+     * 
+    */
+
+    public function seriesBeingWatched(){
+       
+       return collect($this->seriesBeingWatchedIds())->map(function($id){
+           return Series::find($id);
+       })->filter();
+
+    }
+
+
+    /** 
+     * 
+     * Get Count a user is completed lesson for a series
+     * 
+     * 
+     * 
+     * @return void
+     * 
+    */
+    public function getTotalNumberOfCompletedLessons(){
+        $keys = Redis::keys("user:{$this->id}:series:*");
+
+        $result = 0;
+
+        
+        foreach($keys as $key):
+            
+            $result = $result +  count(Redis::smembers($key));
+        endforeach;
+
+        return $result;
+    }
 }

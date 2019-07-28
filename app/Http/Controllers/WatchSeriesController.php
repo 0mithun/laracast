@@ -31,6 +31,14 @@ class WatchSeriesController extends Controller
         ]);
     }
 
+    public function completeLesson(Lesson $lesson){
+        auth()->user()->completeLesson($lesson);
+
+        return response()->json([
+            'status'    =>  'ok'
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

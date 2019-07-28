@@ -16,17 +16,29 @@
 @stop
 @section('content')
    <div class="section bg-gray">
-        <div class="container">        
+        <div class="container"> 
+            @php
+                $next_lesson = $lesson->getNextLesson();
+                $previous_lesson = $lesson->getPreviousLesson();
+
+            @endphp
+
             <div class="row gap-y">
                 <div class="col-12 text-center">
-                    <vue-player default_lesson="{{ $lesson }}"></vue-player>
+                    <vue-player default_lesson="{{ $lesson }}"
+
+                        @if($next_lesson)
+                            next_lesson_url="{{ route('series.watch',['series'=> $series->slug, 'lesson'=>$lesson->getNextLesson()->id]) }}"
+                        @endif
                     
-                    @if($lesson->getPreviousLesson())
-                         <a href="{{ route('series.watch',['series'=> $series->slug, 'lesson'=>$lesson->getPreviousLesson()->id]) }}" class="btn btn-info pull-left">Previous Lesson</a>
+                    ></vue-player>
+                    
+                    @if($previous_lesson)
+                         <a href="{{ route('series.watch',['series'=> $series->slug, 'lesson'=>$previous_lesson->id]) }}" class="btn btn-info pull-left">Previous Lesson</a>
                     @endif
 
-                    @if($lesson->getNextLesson())
-                        <a href="{{ route('series.watch',['series'=> $series->slug, 'lesson'=>$lesson->getNextLesson()->id]) }}" class="btn btn-info pull-right">Next Lesson</a>
+                    @if($next_lesson)
+                        <a href="{{ route('series.watch',['series'=> $series->slug, 'lesson'=>$next_lesson->id]) }}" class="btn btn-info pull-right">Next Lesson</a>
                     @endif
        
                 </div>
@@ -34,7 +46,14 @@
                 <div class="col-12">
                     <ul class="list-group">
                         @foreach ($series->getOrderdedLessons() as $currentLesson)
-                            <li class="list-group-item">
+                            <li class="list-group-item 
+                                @if($lesson->id == $currentLesson->id)
+                                    list-group-item-info
+                                @endif
+                            ">
+                                @if(auth()->user()->hasCompletedLesson($currentLesson))
+                                    <b><small>Completed</small></b>
+                                @endif
                                 <a href="{{ route('series.watch', ['series' => $series->slug, 'lesson' => $currentLesson->id]) }}">{{ $currentLesson->title }}</a>
                             </li>
                         @endforeach

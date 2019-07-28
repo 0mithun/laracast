@@ -47,6 +47,7 @@
 
 
               <li class="nav-item">Hey, {{ auth()->user()->name }}</li>
+              <li class="nav-item">  <a class="nav-link" href="{{ route('profile', auth()->user()->username) }}">Profile</a> </li>
               <li class="nav-item" > <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();"> Log Out </a></li>
               {{-- <li class="nav-item"><a class="nav-link" href="#" >Log Out</a></li> --}}

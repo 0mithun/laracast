@@ -38,10 +38,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
+
     public function isAdmin(){
         return in_array($this->email, config('laracast.administrators'));
     }
 
 
+    
     
 }
