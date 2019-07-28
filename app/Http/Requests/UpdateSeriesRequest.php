@@ -1,9 +1,6 @@
 <?php
-
 namespace App\Http\Requests;
-
 use Illuminate\Foundation\Http\FormRequest;
-
 class UpdateSeriesRequest extends FormRequest
 {
     /**
@@ -15,7 +12,6 @@ class UpdateSeriesRequest extends FormRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,15 +25,10 @@ class UpdateSeriesRequest extends FormRequest
             'image'         =>  'image'
         ];
     }
-
-
-
     public function uploadSeriesImage(){
         $image = $this->image;
         $this->fileName =  str_slug($this->title).".".$image->getClientOriginalExtension();
-
-        $image->storePubliclyAs('series', $this->fileName);
-
+        $image->storePubliclyAs('public/series', $this->fileName);
         return $this;
     }
 }

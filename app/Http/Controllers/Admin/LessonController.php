@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Lesson;
 use App\Series;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateLessonRequest;
 use App\Http\Requests\UpdateLessonRequest;
+use App\Http\Controllers\Controller;
 
 class LessonController extends Controller
 {

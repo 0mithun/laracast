@@ -11,9 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/redis', function(){
+//     // Redis::set('friend', 'momo');
+//     dd(Redis::get('friend'));
+// });
+
+
+Route::get('/','FrontendController@welcome');
 
 Auth::routes();
 Auth::routes(['verify' => true, 'register'=>'false']);
@@ -22,16 +26,11 @@ Route::get('/login',function(){
    return redirect('/');
 });
 
-
-
 Route::get('/home', 'HomeController@index')->name('home');
 
-// Route::get("{series_by_id}", function(\App\Series $series){
-//      dd($series);
-// });
 
-Route::group(['middleware' => ['admin'], 'prefix' => 'admin'] , function () {
-    Route::resource('series', 'SeriesController');
+Route::get('/series/{series}', 'FrontendController@series')->name('series');
 
-    Route::resource('{series_by_id}/lessons', 'LessonController');
-});
+Route::get('/watch-series/{series}','WatchSeriesController@index')->name('series.learning');
+
+Route::get('/series/{series}/lesson/{lesson}', 'WatchSeriesController@showLesson')->name('series.watch');
