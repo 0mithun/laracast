@@ -22,7 +22,11 @@ class Series extends Model
          return 'slug';
      }
 
-     public function getImagePathAttribute(){
-         return asset('storage/'.$this->image_url);
-     }
+    public function getImagePathAttribute(){
+        return asset('storage/'.$this->image_url);
+    }
+
+    public function getOrderdedLessons(){
+        return $this->lessons()->orderBy('episode_number','ASC')->get();
+    }
 }
