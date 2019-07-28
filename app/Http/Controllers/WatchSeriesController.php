@@ -25,7 +25,10 @@ class WatchSeriesController extends Controller
 
     public function showLesson(Series $series, Lesson $lesson){
 
-        return $lesson;
+        return view('watch', [
+            'series'        =>  $series,
+            'lesson'        =>  $lesson
+        ]);
     }
 
     /**

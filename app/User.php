@@ -42,4 +42,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return in_array($this->email, config('laracast.administrators'));
     }
 
+
+    
 }
