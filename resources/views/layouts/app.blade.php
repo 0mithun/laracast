@@ -39,13 +39,14 @@
         <div class="topbar-right">
           <ul class="topbar-nav nav">
 
-            @if(auth()->check())
+            @auth
 
+              @admin
+                <li class="nav-item"> <a class="nav-link" href="{{ route('series.create')}}">Create Series</a> </li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('series.index')}}">All Series</a> </li>
+              @else
 
-              <li class="nav-item"> <a class="nav-link" href="{{ route('series.create')}}">Create Series</a> </li>
-              <li class="nav-item"> <a class="nav-link" href="{{ route('series.index')}}">All Series</a> </li>
-
-
+              @endadmin
               <li class="nav-item">Hey, {{ auth()->user()->name }}</li>
               <li class="nav-item">  <a class="nav-link" href="{{ route('profile', auth()->user()->username) }}">Profile</a> </li>
               <li class="nav-item" > <a href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -54,10 +55,13 @@
               <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display:none;">
                 @csrf
               </form>
-            @else
+            @endauth
+
+            @guest
+
               <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
               <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#LoginModal">Login</a></li>
-            @endif
+            @endguest
           </ul>
         </div>
 

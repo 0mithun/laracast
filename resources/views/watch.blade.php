@@ -27,17 +27,17 @@
                 <div class="col-12 text-center">
                     <vue-player default_lesson="{{ $lesson }}"
 
-                        @if($next_lesson)
-                            next_lesson_url="{{ route('series.watch',['series'=> $series->slug, 'lesson'=>$lesson->getNextLesson()->id]) }}"
+                        @if($next_lesson->id !== $lesson->id)
+                            next_lesson_url="{{ route('series.watch',['series'=> $series->slug, 'lesson'=>$next_lesson]) }}"
                         @endif
                     
                     ></vue-player>
                     
-                    @if($previous_lesson)
+                    @if($previous_lesson->id !== $lesson->id)
                          <a href="{{ route('series.watch',['series'=> $series->slug, 'lesson'=>$previous_lesson->id]) }}" class="btn btn-info pull-left">Previous Lesson</a>
                     @endif
 
-                    @if($next_lesson)
+                    @if($next_lesson ->id !== $lesson->id)
                         <a href="{{ route('series.watch',['series'=> $series->slug, 'lesson'=>$next_lesson->id]) }}" class="btn btn-info pull-right">Next Lesson</a>
                     @endif
        

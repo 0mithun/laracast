@@ -16,14 +16,25 @@ class Lesson extends Model
     }
 
     public function getNextLesson(){
-        return $this->series->lessons()->where('episode_number', '>', $this->episode_number)
+        $next_lesson =  $this->series->lessons()->where('episode_number', '>', $this->episode_number)
                     ->orderBy('episode_number','ASC')
                     ->first();
+        
+        if($next_lesson){
+            return $next_lesson;
+        }
+
+        return $this;
     }
 
     public function getPreviousLesson(){
-        return $this->series->lessons()->where('episode_number', '<', $this->episode_number)
+        $previous_lesson = $this->series->lessons()->where('episode_number', '<', $this->episode_number)
                     ->orderby('episode_number', 'DESC')
                     ->first();
+        
+        if($previous_lesson){
+            return $previous_lesson;
+        }
+        return $this;
     }
 }

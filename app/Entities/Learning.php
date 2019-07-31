@@ -180,4 +180,21 @@ trait Learning{
 
         return $result;
     }
+
+    /** 
+     * 
+     * Get Next lesson for a series
+     * 
+     * @param App\Lesson $lesson
+     * 
+     * @return void
+    */
+
+    public function getNextLessonToWatch($series){
+        $lesson_id = $this->getCompletedLessonsForASeries($series);
+        $lesson_id = end($lesson_id);
+
+        return Lesson::find($lesson_id)->getNextLesson();
+    }
 }
+
