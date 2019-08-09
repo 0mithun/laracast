@@ -43,5 +43,17 @@ Route::group(['middleware' => ['auth']], function () {
 
    Route::get('/series/{series}/lesson/{lesson}', 'WatchSeriesController@showLesson')->name('series.watch');
 
+   Route::get('/subscribe', function(){
+      return view('subscribe');
+   });
+
+   Route::post('/subscribe', function(){
+      // return request()->all();
+     return auth()->user()
+            ->newSubscription('Laracast Payment', request('plan'))
+            ->create(request('stripeToken'));
+   });
+
+   Route::post('subscribe/change', 'SubscriptionsController@change')->name('subscriptions.change');
 
 });

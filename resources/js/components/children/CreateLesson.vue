@@ -36,6 +36,12 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <div class="">
+                          <label><input type="checkbox" class="" v-model="lesson.premium"> Premium</label>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success btn-block" type="button" @click="updateLesson" v-if="editing">Save Lesson</button>
@@ -55,7 +61,8 @@
             this.title = lesson.title || ''
             this.description = lesson.description || ''
             this.episode_number = lesson.episode_number || ''
-            this.video_id = lesson.video_id || ''
+            this.video_id = lesson.video_id || '',
+            this.premium = lesson.premium || false
         }
     }
 
@@ -66,6 +73,7 @@
                 seriesId : '',
                 lessonId: null,
                 editing:false,
+                premium: false,
                 errors: {}
             }
         },

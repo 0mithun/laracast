@@ -18,6 +18,7 @@
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="{{ asset('assets/img/apple-touch-icon.png') }}">
     <link rel="icon" href="{{ asset('assets/img/favicon.png') }}">
+    @yield('script')
   </head>
 
   <body>

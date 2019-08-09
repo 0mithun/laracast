@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@vimeo/player": "^2.10.0",
+        "stripe": "^7.5.3",
         "sweetalert": "^2.1.2"
     }
 }

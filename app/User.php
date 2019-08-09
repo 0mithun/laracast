@@ -3,13 +3,14 @@
 namespace App;
 
 use App\Entities\Learning;
+use Laravel\Cashier\Billable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, Learning;
+    use Notifiable, Learning, Billable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name', 'email', 'password','username','confirm_token'
     ];
 
+    protected $with = ['subscriptions'];
     /**
      * The attributes that should be hidden for arrays.
      *
