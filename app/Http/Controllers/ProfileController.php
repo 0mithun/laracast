@@ -10,6 +10,7 @@ class ProfileController extends Controller
     public function index(User $user){
         return view('profile')
                 ->withUser($user)
+                ->withSubscriptions($user)
                 ->withSeries($user->seriesBeingWatched());
     }
 }

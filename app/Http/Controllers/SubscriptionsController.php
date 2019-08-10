@@ -6,7 +6,16 @@ use Illuminate\Http\Request;
 
 class SubscriptionsController extends Controller
 {
-    
+    public function showSubscribe(){
+        return view('subscribe');
+    }
+
+    public function saveSubscribe(){
+        // return request()->all();
+        return auth()->user()
+        ->newSubscription('Laracast Payment', request('plan'))
+        ->create(request('stripeToken'));
+    }
 
 
     public function change(){
@@ -27,5 +36,16 @@ class SubscriptionsController extends Controller
             
             return redirect()->back();
         }
+    }
+
+   public function cardUpdate(){
+
+        $this->validate(request(), [
+            'stripeToken'  => 'required'
+        ]);
+        $token = request('stripeToken');
+        $user = auth()->user();
+        $user->updateCard($token);
+        return response()->json('ok');
     }
 }

@@ -11,12 +11,6 @@
 |
 */
 
-// Route::get('/redis', function(){
-//     // Redis::set('friend', 'momo');
-//     dd(Redis::get('friend'));
-// });
-
-
 Route::get('/','FrontendController@welcome');
 
 Auth::routes();
@@ -28,11 +22,7 @@ Route::get('/login',function(){
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
 Route::get('/series/{series}', 'FrontendController@series')->name('series');
-
-
-
 
 Route::group(['middleware' => ['auth']], function () {
     
@@ -43,17 +33,14 @@ Route::group(['middleware' => ['auth']], function () {
 
    Route::get('/series/{series}/lesson/{lesson}', 'WatchSeriesController@showLesson')->name('series.watch');
 
-   Route::get('/subscribe', function(){
-      return view('subscribe');
-   });
+   Route::get('subscribe', 'SubscriptionsController@showSubscribe')->name('subscribe.show');
 
-   Route::post('/subscribe', function(){
-      // return request()->all();
-     return auth()->user()
-            ->newSubscription('Laracast Payment', request('plan'))
-            ->create(request('stripeToken'));
-   });
+   Route::post('subscribe', 'SubscriptionsController@saveSubscribe')->name('subscribe.save');
+
 
    Route::post('subscribe/change', 'SubscriptionsController@change')->name('subscriptions.change');
+
+   Route::post('card/update', 'SubscriptionsController@cardUpdate')->name('card.update');
+
 
 });

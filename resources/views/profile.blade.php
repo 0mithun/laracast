@@ -19,7 +19,7 @@
 @stop
 @section('content')
    <section class="section" id="section-vtab">
-        <header class="container">
+        <div class="container">
             <header class="section-header">
                 <h2>Series Being Watched</h2>
                 <hr>
@@ -55,7 +55,11 @@
             <hr>
             <p class="lead">We waited until we could do it right. Then we did! Instead of creating a carbon copy.</p>
           </header>
+          @php
+            $user = auth()->user(); 
+            $subscription  = $user->subscriptions->first();
 
+          @endphp
 
           <div class="row">
             
@@ -72,11 +76,13 @@
                     <h6>Payment & Subscriptions</h6>
                   </a>
                 </li>
+                 @if($subscription)
                 <li class="nav-item">
                   <a class="nav-link" data-toggle="tab" href="#tab-3">
-                    <h6>Settings</h6>
+                    <h6>Card Details</h6>
                   </a>
                 </li>
+                @endif
               </ul>
             </div>
 
@@ -84,13 +90,29 @@
             <div class="col-8 col-md-8 align-self-center">
               <div class="tab-content text-center">
                 <div class="tab-pane fade show active" id="tab-1">
-                tab 1 content
-                  <img class="shadow-3" src="assets/img/header-color.jpg" alt="...">
+                  <form action="">
+                    <div class="form-group">
+                      <input type="text" placeholder="Your name"  class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" placeholder="Your Email"  class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <button class="btn btn-primary btn-block">Save Change</button>
+                    </div>
+                  </form>
                 </div>
 
                 <div class="tab-pane fade" id="tab-2">
-                        <h5 class="text-center">Your Current Plan: <span class="badge badge-success">{{ auth()->user()->subscriptions->first()->stripe_plan }}</span></h5>
+                        <h5 class="text-center">Your Current Plan:
+                          @if($subscription)
+                             <span class="badge badge-success">{{ $subscription->stripe_plan }}</span></h5>
+                          @else
+                           <span class="badge badge-danger" >You have not any plan </span> &nbsp;&nbsp;   <a href="{{ route('subscribe.show') }}" class="">Please Subscribe to a plan </a>
+                          @endif
+                        
                         <br>
+                        @if($subscription)
                         <form action="{{ route('subscriptions.change') }}" method="post">
                             @csrf
                             <div class="form-group">
@@ -104,13 +126,20 @@
                             <button class="btn btn-info btn-block">Change Plan</button>
                             </div>
                         </form>
+                        @endif
                 </div>
+                 @if($subscription)
 
                 <div class="tab-pane fade" id="tab-3">
-                tab 3 content
-                  <img class="shadow-3" src="assets/img/header-image.jpg" alt="...">
-                </div>
 
+                      <h3>
+                        Your current card: <span class="badge badge-primary">{{  $user->card_brand }} | {{  $user->card_last_four }}</span>
+                      </h3>
+                      <br>
+                      <vue-update-card email="{{  $user->email }}"></vue-update-card>
+                    
+                </div>
+                @endif
               </div>
             </div>
 
@@ -118,8 +147,9 @@
           </div>
 
         </div>
-      </section>
-
-   <section class="section bg-grey" id="section-vtab">
-        <header 
+    </section>
 @stop
+
+@section('script')
+    <script src="https://js.stripe.com/v3/"></script>
+@endsection
